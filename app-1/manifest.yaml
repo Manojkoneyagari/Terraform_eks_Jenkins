@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment 
 metadata:
   name: deployment-1
+  namespace: roboshop
   labels:
     project: roboshop
     purpose: nginx 
@@ -35,6 +36,7 @@ apiVersion: v1
 kind: Service 
 metadata:
   name: app1-service 
+  namespace: roboshop
   labels:
     component: app1
 spec:
@@ -48,34 +50,16 @@ spec:
 
 
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
 metadata:
-  name: app1-ingress
-  annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:978236789333:certificate/a23a49ad-6678-4810-ae9d-a78d9694efb2
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/tags: Environment=dev,Team=test
-    alb.ingress.kubernetes.io/group.name: roboshop
-    
-
-
+  name: app1
+  namespace: roboshop
 spec:
-  ingressClassName: alb
-
-  rules:
-  - host: "app1.manojkoney.store"
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: app1-service 
-            port:
-              number: 80
-
+  serviceRef:
+    name: app1 # route traffic to the awesome-service
+    port: 80
+  targetGroupARN: arn:aws:elasticloadbalancing:us-east-1:160885265516:targetgroup/roboshop-dev-frontend/13ffd560fd8ed9f8
+  targetType: ip
 
 
