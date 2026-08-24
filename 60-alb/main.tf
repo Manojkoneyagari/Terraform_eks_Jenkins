@@ -3,7 +3,7 @@ resource "aws_lb" "public_alb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [local.Public_alb_sg]
-  subnets            = [local.public_subnet_id]
+  subnets            = local.public_subnet_id
 
   enable_deletion_protection = false
 
@@ -103,7 +103,7 @@ resource "aws_lb_target_group" "app2" {
 
 resource "aws_lb_listener_rule" "app2" {
   listener_arn = aws_lb_listener.https.arn
-  priority     = 10
+  priority     = 20
 
   action {
     type             = "forward"
