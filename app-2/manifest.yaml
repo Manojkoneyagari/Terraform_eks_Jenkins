@@ -8,7 +8,7 @@ metadata:
     purpose: nginx 
 
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       component: app2
