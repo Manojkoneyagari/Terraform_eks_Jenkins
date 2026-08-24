@@ -54,14 +54,21 @@ sudo cp kubectl /usr/local/bin/kubectl
 
 #Helm
 sudo apt install -y curl gpg apt-transport-https
-curl https://packages.buildkite.com/helm-linux/helm-debian/helm-debian-archive-keyring.gpg \
+sudo rm -f /usr/share/keyrings/helm.gpg
+curl -fsSL https://packages.buildkite.com/helm-linux/helm-debian/gpgkey \
+  | gpg --dearmor \
   | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
 
 echo "deb [signed-by=/usr/share/keyrings/helm.gpg] https://packages.buildkite.com/helm-linux/helm-debian/any/ any main" \
   | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
 
+curl -fsSL https://packages.buildkite.com/helm-linux/helm-debian/gpgkey \
+  | gpg --dearmor \
+  | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+sudo chmod 644 /usr/share/keyrings/helm.gpg
 sudo apt update
 sudo apt install -y helm
+
 
 #increase tmp size
 sudo mkdir -p /etc/systemd/system/tmp.mount.d

@@ -57,7 +57,7 @@ metadata:
   namespace: roboshop
 spec:
   serviceRef:
-    name: app1 # route traffic to the awesome-service
+    name: app1-service  # route traffic to the awesome-service
     port: 80
   targetGroupARN: arn:aws:elasticloadbalancing:us-east-1:978236789333:targetgroup/Roboshop-tg-app1/857033e50d7c5ce8
   targetType: ip
