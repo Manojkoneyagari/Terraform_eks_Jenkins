@@ -2,6 +2,7 @@
 
 sudo apt update
 sudo apt install openjdk-21-jdk -y
+apt install awscli -y
 #Add the Jenkins repository key
 
 #Install growpart
@@ -52,6 +53,20 @@ curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.35.3/2026-04-08/bin/linu
 chmod +x ./kubectl
 sudo cp kubectl /usr/local/bin/kubectl
 
+#Trivyscan
+sudo apt-get install -y wget gnupg
+#Trivy GPG Key
+wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key \
+  | gpg --dearmor \
+  | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+
+#Add trivy repo
+echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" \
+  | sudo tee /etc/apt/sources.list.d/trivy.list
+
+sudo apt-get update
+sudo apt-get install -y trivy
+
 #Helm
 sudo apt install -y curl gpg apt-transport-https
 sudo rm -f /usr/share/keyrings/helm.gpg
@@ -68,7 +83,6 @@ curl -fsSL https://packages.buildkite.com/helm-linux/helm-debian/gpgkey \
 sudo chmod 644 /usr/share/keyrings/helm.gpg
 sudo apt update
 sudo apt install -y helm
-
 
 #increase tmp size
 sudo mkdir -p /etc/systemd/system/tmp.mount.d

@@ -49,6 +49,7 @@ module "eks" {
       iam_role_additional_policies = {
         EBS = "arn:aws:iam::aws:policy/AmazonEBSCSIDriverPolicyV2"
         EFS = "arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy"
+        ECRReadOnly = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
       }
 
       metadata_options = {
